@@ -7,25 +7,19 @@ class MyClassComponent extends Component {
     this.state = {
       text: 'Hello World',
     };
+    this.setNewText = this.setNewText.bind(this);
+  }
+  setNewText(newText) {
+    this.setState({text: newText});
   }
 
-  changeText = newText => {
-    this.setState({text: newText});
-  };
-
   render() {
-    // Use the forwarded ref in your component
-    const {forwardedRef, ...rest} = this.props;
-
     return (
-      <View {...rest} ref={forwardedRef}>
+      <View>
         <Text>{this.state.text}</Text>
       </View>
     );
   }
 }
 
-// Note the second param ref forwarded as the first one.
-export default forwardRef((props, ref) => (
-  <MyClassComponent {...props} forwardedRef={ref} />
-));
+export default MyClassComponent;
