@@ -1,25 +1,31 @@
-import React, {Component} from 'react';
-import {Text, TextInput} from 'react-native';
-import {View} from 'react-native';
-import Task23 from '../Task23';
+import React, {Component, forwardRef} from 'react';
+import {View, Text} from 'react-native';
 
 class MyClassComponent extends Component {
-  state = {
-    text: 'Hello From MyClassComponent',
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      text: 'Hello World',
+    };
+  }
 
-  handleTextChange = newText => {
+  changeText = newText => {
     this.setState({text: newText});
   };
 
   render() {
+    // Use the forwarded ref in your component
+    const {forwardedRef, ...rest} = this.props;
+
     return (
-      <View>
-        <TextInput onChangeText={this.handleTextChange}></TextInput>
-        <Task23 text={this.state.text} />
+      <View {...rest} ref={forwardedRef}>
+        <Text>{this.state.text}</Text>
       </View>
     );
   }
 }
 
-export default MyClassComponent;
+// Note the second param ref forwarded as the first one.
+export default forwardRef((props, ref) => (
+  <MyClassComponent {...props} forwardedRef={ref} />
+));
