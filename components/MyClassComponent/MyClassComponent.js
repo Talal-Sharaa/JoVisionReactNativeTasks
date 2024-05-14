@@ -1,17 +1,22 @@
 import React, {Component} from 'react';
-import {Text} from 'react-native';
+import {Text, TextInput} from 'react-native';
 import {View} from 'react-native';
+import Task23 from '../Task23';
+
 class MyClassComponent extends Component {
-  componentDidMount() {
-    console.log('Component Mounted');
-  }
-  componentWillUnmount() {
-    console.log('Component Unmounted');
-  }
+  state = {
+    text: 'Hello From MyClassComponent',
+  };
+
+  handleTextChange = newText => {
+    this.setState({text: newText});
+  };
+
   render() {
     return (
       <View>
-        <Text>Hello From MyClassComponent</Text>
+        <TextInput onChangeText={this.handleTextChange}></TextInput>
+        <Task23 text={this.state.text} />
       </View>
     );
   }

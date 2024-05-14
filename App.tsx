@@ -30,6 +30,7 @@ import Task19 from './components/Task19';
 import Task20 from './components/Task20';
 import Task22 from './components/Task22';
 import MyFunctionPage from './components/MyFunctionPage';
+import MyClassComponent from './components/MyClassComponent';
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;
@@ -80,7 +81,7 @@ function App(): React.JSX.Element {
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
-          <MyFunctionPage />
+          <MyClassComponent />
         </View>
       </ScrollView>
     </SafeAreaView>
