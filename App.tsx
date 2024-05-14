@@ -25,6 +25,8 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 import Task16 from './components/Task16';
+import Task18 from './components/Task18';
+import Task19 from './components/Task19';
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;
@@ -75,7 +77,7 @@ function App(): React.JSX.Element {
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
-          <Task16 />
+          <Task19 />
         </View>
       </ScrollView>
     </SafeAreaView>
