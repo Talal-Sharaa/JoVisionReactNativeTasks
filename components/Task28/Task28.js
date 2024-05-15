@@ -1,38 +1,137 @@
-import React, {useState} from 'react';
-import {View, Image, Button, FlatList, Pressable, Alert} from 'react-native';
+import React, {useRef, useState, useEffect} from 'react';
+import {
+  StyleSheet,
+  View,
+  FlatList,
+  Image,
+  Alert,
+  Pressable,
+  Button,
+  TextInput,
+} from 'react-native';
 
-const Task28 = () => {
-  const [catsImages, setCatsImages] = useState([]);
+const App = () => {
+  const flatListRef = useRef(null);
+  const [inputIndex, setInputIndex] = useState('');
+  const [imageUrls, setImageUrls] = useState([]);
+  const [horizontal, setHorizontal] = useState(true);
 
-  const fetchcats = async () => {
-    try {
-      const response = await fetch(
-        'https://api.thecatapi.com/v1/images/search?limit=10',
-      );
-      const data = await response.json();
-      setCatsImages(data.map(cat => ({uri: cat.url, key: cat.id})));
-    } catch (error) {
-      console.error(error);
-    }
+  useEffect(() => {
+    LoadImages();
+  }, []);
+
+  const LoadImages = () => {
+    const images = [
+      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      // ... (rest of your image URLs)
+    ];
+    setImageUrls(images);
   };
 
-  const showIDs = item => {
-    Alert.alert('Image ID', item.key);
+  const handleImagePress = index => {
+    Alert.alert('You have selected image:', index.toString());
   };
+
+  const getItemLayout = (data, index) => ({
+    length: 500,
+    offset: 500 * index,
+    index,
+  }); // Adjust based on your image width
+
+  const handleScrollToIndex = () => {
+    const index = parseInt(inputIndex, 10);
+    flatListRef.current.scrollToIndex({
+      animated: false,
+      index,
+      vPosition: 0,
+      viewOffset: 100,
+    });
+    setInputIndex('');
+  };
+
+  const renderItem = ({item, index}) => (
+    <Pressable onPress={() => handleImagePress(index)}>
+      <Image source={{uri: item}} style={styles.image} />
+    </Pressable>
+  );
 
   return (
-    <View>
-      <Button title="Load Image" onPress={fetchcats} />
+    <View style={styles.container}>
       <FlatList
-        data={catsImages}
-        renderItem={({item}) => (
-          <Pressable onPress={() => showIDs(item)}>
-            <Image source={{uri: item.uri}} style={{width: 100, height: 100}} />
-          </Pressable>
-        )}
+        ref={flatListRef}
+        data={imageUrls}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => index.toString()}
+        horizontal={horizontal}
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={!horizontal}
+        getItemLayout={getItemLayout}
       />
+
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          keyboardType="numeric"
+          placeholder="Enter image index"
+          value={inputIndex}
+          onChangeText={setInputIndex}
+        />
+        <Button title="Scroll" onPress={handleScrollToIndex} />
+        <Button title="Load Images" onPress={LoadImages} />
+        <Button
+          title={horizontal ? 'Vertical' : 'Horizontal'}
+          onPress={() => {
+            setHorizontal(!horizontal);
+            // Force re-render to update FlatList
+            flatListRef.current.scrollToIndex({animated: false, index: 0});
+          }}
+        />
+      </View>
     </View>
   );
 };
 
-export default Task28;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+  },
+  image: {
+    width: 500,
+    height: 500,
+    margin: 10,
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  input: {
+    flex: 1,
+    marginRight: 10,
+    borderWidth: 1,
+    padding: 8,
+  },
+});
+
+export default App;
