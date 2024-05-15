@@ -1,112 +1,80 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
-  StyleSheet,
   View,
-  FlatList,
   Image,
-  Alert,
   Pressable,
   Button,
   TextInput,
+  FlatList,
+  StyleSheet,
+  Alert,
+  Modal,
 } from 'react-native';
 
-const App = () => {
-  const flatListRef = useRef(null);
+const Task28 = () => {
+  const FlatListRef = useRef();
+  const [images, setImages] = useState([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [inputIndex, setInputIndex] = useState('');
-  const [imageUrls, setImageUrls] = useState([]);
-  const [horizontal, setHorizontal] = useState(true);
 
   useEffect(() => {
-    LoadImages();
+    fetch('https://jsonplaceholder.typicode.com/photos')
+      .then(response => response.json())
+      .then(json => setImages(json))
+      .catch(error => console.error(error));
   }, []);
 
-  const LoadImages = () => {
-    const images = [
-      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      'https://images.unsplash.com/photo-1619704052501-646402f1a553?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      // ... (rest of your image URLs)
-    ];
-    setImageUrls(images);
-  };
-
-  const handleImagePress = index => {
-    Alert.alert('You have selected image:', index.toString());
-  };
-
-  const getItemLayout = (data, index) => ({
-    length: 500,
-    offset: 500 * index,
-    index,
-  }); // Adjust based on your image width
-
-  const handleScrollToIndex = () => {
-    const index = parseInt(inputIndex, 10);
-    flatListRef.current.scrollToIndex({
-      animated: false,
-      index,
-      vPosition: 0,
-      viewOffset: 100,
-    });
-    setInputIndex('');
-  };
-
-  const renderItem = ({item, index}) => (
-    <Pressable onPress={() => handleImagePress(index)}>
-      <Image source={{uri: item}} style={styles.image} />
-    </Pressable>
+  const viewImages = ({item}) => (
+    <View>
+      <Pressable onPress={() => Alert.alert('You selected image: ' + item.id)}>
+        <Image
+          source={{uri: item.url}}
+          style={{width: 100, height: 100}}></Image>
+      </Pressable>
+    </View>
   );
+
+  const scrollToIndex = () => {
+    setIsModalVisible(true);
+  };
 
   return (
     <View style={styles.container}>
-      <FlatList
-        ref={flatListRef}
-        data={imageUrls}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => index.toString()}
-        horizontal={horizontal}
-        showsHorizontalScrollIndicator={false}
-        showsVerticalScrollIndicator={!horizontal}
-        getItemLayout={getItemLayout}
-      />
-
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          keyboardType="numeric"
-          placeholder="Enter image index"
-          value={inputIndex}
-          onChangeText={setInputIndex}
-        />
-        <Button title="Scroll" onPress={handleScrollToIndex} />
-        <Button title="Load Images" onPress={LoadImages} />
-        <Button
-          title={horizontal ? 'Vertical' : 'Horizontal'}
-          onPress={() => {
-            setHorizontal(!horizontal);
-            // Force re-render to update FlatList
-            flatListRef.current.scrollToIndex({animated: false, index: 0});
-          }}
-        />
+      <View>
+        <FlatList
+          ref={FlatListRef}
+          horizontal
+          data={images}
+          renderItem={viewImages}></FlatList>
+        <Button title="Scroll to Index" onPress={scrollToIndex}></Button>
       </View>
+      <Modal
+        visible={isModalVisible}
+        animationType="slide"
+        onRequestClose={() => setIsModalVisible(false)}>
+        <View style={styles.modalContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter image index (starts at 0):"
+            value={inputIndex}
+            onChangeText={setInputIndex}
+            keyboardType="numeric"
+          />
+          <Button
+            title="Scroll"
+            onPress={() => {
+              const index = parseInt(inputIndex, 10) - 1;
+              if (!isNaN(index) && index >= 0 && index < images.length) {
+                FlatListRef.current.scrollToIndex({animated: true, index});
+              } else {
+                Alert.alert('Invalid Index', 'Please enter a valid index.');
+              }
+              setIsModalVisible(false);
+            }}
+          />
+          <Button title="Cancel" onPress={() => setIsModalVisible(false)} />
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -114,24 +82,27 @@ const App = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
   },
   image: {
-    width: 500,
-    height: 500,
-    margin: 10,
+    width: 100,
+    height: 100,
+    margin: 5,
   },
-  inputContainer: {
-    flexDirection: 'row',
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
+    padding: 20,
   },
   input: {
-    flex: 1,
-    marginRight: 10,
+    width: 250,
+    height: 40,
+    borderColor: 'gray',
     borderWidth: 1,
-    padding: 8,
+    marginBottom: 10,
+    paddingHorizontal: 10,
+    color: 'black',
   },
 });
 
-export default App;
+export default Task28;
