@@ -1,7 +1,11 @@
-import React, {Component} from 'react';
+import React, {Component, useEffect} from 'react';
 import {Button, Text} from 'react-native';
 import {useState} from 'react';
 const Task26 = () => {
+  useEffect(() => {
+    fetchIpAddressNonBlocking();
+  }, []);
+
   const [IPText, setIPText] = useState('Show IP Address'); // More descriptive variable name
   const [isLoaded, setIsLoaded] = useState(false); // More descriptive variable name
   const fetchIpAddressNonBlocking = () => {
