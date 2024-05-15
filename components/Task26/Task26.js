@@ -39,7 +39,7 @@ const Task26 = () => {
       <Button
         title="Show IP Address - Blocking"
         onPress={fetchIpAddressBlocking}></Button>
-      <Text>{isLoaded ? IPText : 'Loading...'}</Text>
+      <Text>Your IP address is: {isLoaded ? IPText : 'Loading...'}</Text>
     </>
   );
 };
