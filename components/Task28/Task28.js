@@ -1,107 +1,101 @@
-import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
-  Image,
-  Pressable,
-  Button,
-  TextInput,
   FlatList,
-  StyleSheet,
-  Alert,
+  Image,
+  useWindowDimensions,
   Modal,
+  Button,
+  StyleSheet,
+  TextInput,
+  Pressable,
+  Alert,
 } from 'react-native';
+import React, {useEffect, useState} from 'react';
 
 const Task28 = () => {
-  const FlatListRef = useRef();
   const [images, setImages] = useState([]);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [inputIndex, setInputIndex] = useState('');
-
+  const {width, height} = useWindowDimensions();
+  const [visible, setVisible] = useState(false);
+  const [index, setIndex] = useState(0);
+  const [horizontal, setHorizontal] = useState(false);
+  const flatListRef = React.useRef();
   useEffect(() => {
     fetch('https://jsonplaceholder.typicode.com/photos')
       .then(response => response.json())
-      .then(json => setImages(json))
-      .catch(error => console.error(error));
+      .then(json => {
+        setImages(json);
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }, []);
 
-  const viewImages = ({item}) => (
-    <View>
-      <Pressable onPress={() => Alert.alert('You selected image: ' + item.id)}>
-        <Image
-          source={{uri: item.url}}
-          style={{width: 100, height: 100}}></Image>
-      </Pressable>
-    </View>
-  );
-
   const scrollToIndex = () => {
-    setIsModalVisible(true);
+    setVisible(false);
+    if (index < images.length) {
+      flatListRef.current.scrollToIndex({animated: true, index: index});
+    }
   };
-
   return (
-    <View style={styles.container}>
-      <View>
-        <FlatList
-          ref={FlatListRef}
-          horizontal
-          data={images}
-          renderItem={viewImages}></FlatList>
-        <Button title="Scroll to Index" onPress={scrollToIndex}></Button>
-      </View>
+    <View style={{width: width, height: height}}>
+      <Button title="Scroll to index" onPress={() => setVisible(true)} />
+      <Button
+        title="Change direction"
+        onPress={() => setHorizontal(!horizontal)}
+      />
       <Modal
-        visible={isModalVisible}
+        visible={visible}
         animationType="slide"
-        onRequestClose={() => setIsModalVisible(false)}>
+        transparent={true}
+        onRequestClose={() => {
+          setVisible(false);
+        }}>
         <View style={styles.modalContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter image index (starts at 0):"
-            value={inputIndex}
-            onChangeText={setInputIndex}
-            keyboardType="numeric"
-          />
-          <Button
-            title="Scroll"
-            onPress={() => {
-              const index = parseInt(inputIndex, 10) - 1;
-              if (!isNaN(index) && index >= 0 && index < images.length) {
-                FlatListRef.current.scrollToIndex({animated: true, index});
-              } else {
-                Alert.alert('Invalid Index', 'Please enter a valid index.');
-              }
-              setIsModalVisible(false);
-            }}
-          />
-          <Button title="Cancel" onPress={() => setIsModalVisible(false)} />
+          <View style={styles.modalContent}>
+            <Button title="Scroll to index" onPress={scrollToIndex} />
+            <TextInput
+              placeholder="Enter index"
+              onChangeText={text => setIndex(parseInt(text) - 1)}
+              style={{borderWidth: 1, width: 100, color: 'black'}}
+            />
+            <Button title="Close" onPress={() => setVisible(false)} />
+          </View>
         </View>
       </Modal>
+      <FlatList
+        data={images}
+        ref={flatListRef}
+        horizontal={horizontal}
+        keyExtractor={item => item.id.toString()}
+        renderItem={({item}) => (
+          <View>
+            <Pressable onPress={() => Alert.alert(item.id.toString())}>
+              <Image source={{uri: item.url}} style={styles.image} />
+            </Pressable>
+          </View>
+        )}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  image: {
-    width: 100,
-    height: 100,
-    margin: 5,
-  },
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    backgroundColor: 'rgba(0,0,0,0.5)',
   },
-  input: {
-    width: 250,
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-    color: 'black',
+  modalContent: {
+    width: 300,
+    padding: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  image: {
+    width: 100,
+    height: 100,
   },
 });
 
