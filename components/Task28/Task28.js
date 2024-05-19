@@ -28,7 +28,7 @@ const Task28 = () => {
     fetch('https://jsonplaceholder.typicode.com/photos')
       .then(response => response.json())
       .then(json => {
-        setImages(json.slice(0, 4));
+        setImages(json.slice(0, 20));
       })
       .catch(error => {
         console.error(error);
