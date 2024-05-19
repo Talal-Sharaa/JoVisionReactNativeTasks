@@ -9,8 +9,13 @@ import {
   TextInput,
   Pressable,
   Alert,
+  Text,
+  ImageBackground,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faTrashAlt} from '@fortawesome/free-solid-svg-icons';
+import {faRepeat} from '@fortawesome/free-solid-svg-icons';
 
 const Task28 = () => {
   const [images, setImages] = useState([]);
@@ -23,18 +28,28 @@ const Task28 = () => {
     fetch('https://jsonplaceholder.typicode.com/photos')
       .then(response => response.json())
       .then(json => {
-        setImages(json);
+        setImages(json.slice(0, 4));
       })
       .catch(error => {
         console.error(error);
       });
   }, []);
-
   const scrollToIndex = () => {
     setVisible(false);
     if (index < images.length) {
       flatListRef.current.scrollToIndex({animated: true, index: index});
     }
+  };
+  const deleteItem = index => {
+    let temp = [...images];
+    temp.splice(index, 1);
+    setImages(temp);
+  };
+  const repeatItem = index => {
+    let temp = [...images];
+    let newImage = {...images[index], id: temp.length + 1};
+    temp.push(newImage);
+    setImages(temp);
   };
   return (
     <View style={{width: width, height: height}}>
@@ -67,13 +82,32 @@ const Task28 = () => {
         ref={flatListRef}
         horizontal={horizontal}
         keyExtractor={item => item.id.toString()}
-        renderItem={({item}) => (
+        renderItem={({item, index}) => (
           <View>
             <Pressable onPress={() => Alert.alert(item.id.toString())}>
-              <Image source={{uri: item.url}} style={styles.image} />
+              <ImageBackground source={{uri: item.url}} style={styles.image}>
+                <View style={{position: 'absolute', right: 0, bottom: 0}}>
+                  <Pressable onPress={() => deleteItem(index)}>
+                    <FontAwesomeIcon icon={faTrashAlt} />
+                  </Pressable>
+                </View>
+                <View style={{position: 'absolute', left: 0, bottom: 0}}>
+                  <Pressable onPress={() => repeatItem(index)}>
+                    <FontAwesomeIcon icon={faRepeat} />
+                  </Pressable>
+                </View>
+              </ImageBackground>
             </Pressable>
           </View>
         )}
+        getItemLayout={(_, index) => {
+          const itemHeight = 100;
+          return {
+            length: itemHeight,
+            offset: itemHeight * index,
+            index,
+          };
+        }}
       />
     </View>
   );
@@ -94,7 +128,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   image: {
-    width: 100,
+    width: '100%',
     height: 100,
   },
 });
