@@ -5,9 +5,9 @@ import {
   ScrollView,
   SafeAreaView,
   useWindowDimensions,
+  RefreshControl,
 } from 'react-native';
 import React, {useEffect, useState, useCallback} from 'react';
-import {RefreshControl} from 'react-native-web-refresh-control';
 
 const Task36 = () => {
   const [words, setWords] = useState([]);
