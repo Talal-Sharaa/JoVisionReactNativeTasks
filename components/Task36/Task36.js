@@ -1,45 +1,88 @@
-import {StyleSheet, Text, View, ScrollView} from 'react-native';
-import React, {useEffect} from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  SafeAreaView,
+  useWindowDimensions,
+} from 'react-native';
+import React, {useEffect, useState, useCallback} from 'react';
+import {RefreshControl} from 'react-native-web-refresh-control';
 
 const Task36 = () => {
-  const [words, setWords] = React.useState([]);
+  const [words, setWords] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+  const {width, height} = useWindowDimensions();
   const fetchRandomWords = async () => {
-    const response = await fetch(
-      'https://random-word-api.herokuapp.com/word?number=100',
-    );
-    const data = await response.json();
-    setWords(data);
+    console.log('Fetching words...');
+    try {
+      const response = await fetch(
+        'https://random-word-api.herokuapp.com/word?number=100',
+      );
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setWords(data);
+      console.log('Words fetched successfully');
+    } catch (error) {
+      console.error('Error fetching words: ', error);
+    }
   };
+
   useEffect(() => {
     fetchRandomWords();
   }, []);
+
+  const onRefresh = useCallback(() => {
+    console.log('Refreshing...');
+    setRefreshing(true);
+    fetchRandomWords().finally(() => {
+      console.log('Refreshed!');
+      setRefreshing(false);
+    });
+  }, []);
+
   return (
-    <View>
+    <SafeAreaView style={{...styles.container, width: width, height: height}}>
       <ScrollView
-        style={{flex: 1}}
-        contentContainerStyle={{
-          flexGrow: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        {words.map((word, index) => (
-          <Text
-            key={index}
-            style={{
-              backgroundColor: '#A9C79C',
-              margin: 10,
-              padding: 10,
-              width: '100%',
-              textAlign: 'center',
-            }}>
-            {word}
-          </Text>
-        ))}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
+        {words.length === 0 ? (
+          <Text style={styles.noWords}>No words available</Text>
+        ) : (
+          words.map((word, index) => (
+            <Text key={index} style={styles.word}>
+              {word}
+            </Text>
+          ))
+        )}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
-export default Task36;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  contentContainer: {
+    paddingVertical: 20,
+    flexGrow: 1, // Ensures the content is scrollable
+  },
+  noWords: {
+    textAlign: 'center',
+    marginTop: 20,
+  },
+  word: {
+    backgroundColor: '#A9C79C',
+    margin: 10,
+    padding: 10,
+    width: '90%',
+    textAlign: 'center',
+    alignSelf: 'center',
+  },
+});
 
-const styles = StyleSheet.create({});
+export default Task36;
