@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   playButton: {
     width: '30%',
     height: '30%',
-    resizeMode: 'contain',
+    resizeMode: 'cover',
   },
 });
 
