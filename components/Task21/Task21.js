@@ -1,8 +1,8 @@
 import {Text, StyleSheet, View} from 'react-native';
 import React, {Component} from 'react';
 import {Button} from 'react-native';
-import MyClassComponent from '../MyClassComponent';
-export default class Task20 extends Component {
+import MyFunctionPage from '../MyFunctionPage';
+export default class Task21 extends Component {
   state = {
     showComponent: false,
     titleText: 'Show Component',
@@ -21,10 +21,11 @@ export default class Task20 extends Component {
                 : 'Hide Component',
             });
           }}></Button>
-        {this.state.showComponent && <MyClassComponent />}
+        {this.state.showComponent && <MyFunctionPage />}
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({});
+

@@ -85,7 +85,13 @@ const Task28 = () => {
         renderItem={({item, index}) => (
           <View>
             <Pressable onPress={() => Alert.alert(item.id.toString())}>
-              <ImageBackground source={{uri: item.url}} style={styles.image}>
+              <ImageBackground
+                source={{uri: item.url}}
+                style={
+                  horizontal
+                    ? {width: 50, height: 100}
+                    : {width: '100%', height: 100}
+                }>
                 <View style={{position: 'absolute', right: 0, bottom: 0}}>
                   <Pressable onPress={() => deleteItem(index)}>
                     <FontAwesomeIcon icon={faTrashAlt} />
@@ -102,9 +108,10 @@ const Task28 = () => {
         )}
         getItemLayout={(_, index) => {
           const itemHeight = 100;
+          const itemWidth = 50;
           return {
-            length: itemHeight,
-            offset: itemHeight * index,
+            length: horizontal ? itemWidth : itemHeight,
+            offset: horizontal ? itemWidth * index : itemHeight * index,
             index,
           };
         }}
