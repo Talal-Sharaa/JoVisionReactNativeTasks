@@ -7,60 +7,60 @@ import {
 } from 'react-native';
 import Video from 'react-native-video';
 import {SvgUri} from 'react-native-svg';
-
 const Task32 = () => {
   const {width, height} = useWindowDimensions();
   const [isPaused, setIsPaused] = React.useState(false);
-
   return (
     <View style={{...styles.container, width: width, height: height}}>
-      <Video
-        source={{uri: 'https://www.w3schools.com/html/mov_bbb.mp4'}}
-        style={styles.backgroundVideo}
-        paused={isPaused}
-        repeat={true}
-      />
-      <View style={styles.controls}>
-        <TouchableOpacity
-          onPress={() => {
-            setIsPaused(!isPaused);
-          }}>
-          <SvgUri
-            uri={
-              isPaused
-                ? 'https://placehold.co/50x50/00ff00/ffffff?text=Play'
-                : 'https://placehold.co/50x50/ff0000/ffffff?text=Pause'
-            }
-            style={styles.controlButton}
-          />
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity
+        style={styles.touchable}
+        onPress={() => {
+          setIsPaused(!isPaused);
+        }}>
+        <Video
+          source={{uri: 'https://www.w3schools.com/html/mov_bbb.mp4'}}
+          style={styles.backgroundVideo}
+          paused={isPaused}
+          repeat={true}
+        />
+      </TouchableOpacity>
+      {isPaused && (
+        <View style={styles.overlay}>
+          <TouchableOpacity
+            onPress={() => {
+              setIsPaused(!isPaused);
+            }}>
+            <SvgUri
+              uri="https://placehold.co/400x215/orange/white?text=Play"
+              style={styles.playButton}
+            />
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'black',
+  },
+  touchable: {
+    flex: 1,
   },
   backgroundVideo: {
     ...StyleSheet.absoluteFillObject,
   },
-  controls: {
-    position: 'absolute',
-    bottom: 20,
-    left: 0,
-    right: 0,
-    flexDirection: 'row',
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   playButton: {
     width: '30%',
     height: '30%',
+    resizeMode: 'contain',
     resizeMode: 'cover',
   },
 });
-
 export default Task32;
