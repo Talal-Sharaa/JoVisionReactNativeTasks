@@ -56,10 +56,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  controlButton: {
-    width: 50,
-    height: 50,
-    marginHorizontal: 10,
+  playButton: {
+    width: '30%',
+    height: '30%',
+    resizeMode: 'cover',
   },
 });
 
