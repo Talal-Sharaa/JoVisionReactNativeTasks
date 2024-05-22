@@ -29,11 +29,9 @@ const Task36 = () => {
       console.error('Error fetching words: ', error);
     }
   };
-
   useEffect(() => {
     fetchRandomWords();
   }, []);
-
   const onRefresh = useCallback(() => {
     console.log('Refreshing...');
     setRefreshing(true);
@@ -42,7 +40,6 @@ const Task36 = () => {
       setRefreshing(false);
     });
   }, []);
-
   return (
     <SafeAreaView style={{...styles.container, width: width, height: height}}>
       <ScrollView
@@ -62,7 +59,6 @@ const Task36 = () => {
     </SafeAreaView>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -84,5 +80,4 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
 });
-
 export default Task36;

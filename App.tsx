@@ -93,7 +93,7 @@ function App(): React.JSX.Element {
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
-          <Task32 />
+          <Task36 />
         </View>
       </ScrollView>
     </SafeAreaView>
