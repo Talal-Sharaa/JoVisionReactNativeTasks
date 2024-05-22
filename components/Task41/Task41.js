@@ -1,99 +1,87 @@
-import * as React from 'react';
+import React from 'react';
+import {StyleSheet, View, useWindowDimensions, Image} from 'react-native';
+import HomePage from './HomePage';
+import SettingsPage from './SettingsPage';
+import AboutPage from './AboutPage';
+import ProfilePage from './ProfilePage';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Button, Text, View} from 'react-native';
-
-function ScreenOne({navigation}) {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Screen One</Text>
-      <Button
-        title="Go to Screen Two"
-        onPress={() => navigation.navigate('Two')}
-      />
-      <Button
-        title="Go to Screen Three"
-        onPress={() => navigation.navigate('Three')}
-      />
-      <Button
-        title="Go to Screen Four"
-        onPress={() => navigation.navigate('Four')}
-      />
-    </View>
-  );
-}
-
-function ScreenTwo({navigation}) {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Screen Two</Text>
-      <Button
-        title="Go to Screen One"
-        onPress={() => navigation.navigate('One')}
-      />
-      <Button
-        title="Go to Screen Three"
-        onPress={() => navigation.navigate('Three')}
-      />
-      <Button
-        title="Go to Screen Four"
-        onPress={() => navigation.navigate('Four')}
-      />
-    </View>
-  );
-}
-
-function ScreenThree({navigation}) {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Screen Three</Text>
-      <Button
-        title="Go to Screen One"
-        onPress={() => navigation.navigate('One')}
-      />
-      <Button
-        title="Go to Screen Two"
-        onPress={() => navigation.navigate('Two')}
-      />
-      <Button
-        title="Go to Screen Four"
-        onPress={() => navigation.navigate('Four')}
-      />
-    </View>
-  );
-}
-
-function ScreenFour({navigation}) {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Screen Four</Text>
-      <Button
-        title="Go to Screen One"
-        onPress={() => navigation.navigate('One')}
-      />
-      <Button
-        title="Go to Screen Two"
-        onPress={() => navigation.navigate('Two')}
-      />
-      <Button
-        title="Go to Screen Three"
-        onPress={() => navigation.navigate('Three')}
-      />
-    </View>
-  );
-}
 
 const Tab = createBottomTabNavigator();
 
-export default function App() {
+const Task41 = () => {
+  const {height, width} = useWindowDimensions();
+
   return (
-    <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="One" component={ScreenOne} />
-        <Tab.Screen name="Two" component={ScreenTwo} />
-        <Tab.Screen name="Three" component={ScreenThree} />
-        <Tab.Screen name="Four" component={ScreenFour} />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <View style={{height: height, width: width}}>
+      <NavigationContainer>
+        <Tab.Navigator>
+          <Tab.Screen
+            name="Home"
+            component={HomePage}
+            options={{
+              headerShown: false,
+              tabBarIcon: ({color, size}) => (
+                <Image
+                  source={{
+                    uri: 'https://static-00.iconduck.com/assets.00/home-icon-512x459-iwzgyv62.png',
+                  }}
+                  style={{width: size, height: size, tintColor: color}}
+                />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Settings"
+            component={SettingsPage}
+            options={{
+              headerShown: false,
+              tabBarIcon: ({color, size}) => (
+                <Image
+                  source={{
+                    uri: 'https://static-00.iconduck.com/assets.00/settings-icon-512x512-0w6qh5yw.png',
+                  }}
+                  style={{width: size, height: size, tintColor: color}}
+                />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="About"
+            component={AboutPage}
+            options={{
+              headerShown: false,
+              tabBarIcon: ({color, size}) => (
+                <Image
+                  source={{
+                    uri: 'https://static-00.iconduck.com/assets.00/help-about-symbolic-icon-512x512-thx4rsrt.png',
+                  }}
+                  style={{width: size, height: size, tintColor: color}}
+                />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Profile"
+            component={ProfilePage}
+            options={{
+              headerShown: false,
+              tabBarIcon: ({color, size}) => (
+                <Image
+                  source={{
+                    uri: 'https://static-00.iconduck.com/assets.00/profile-icon-512x512-w0uaq4yr.png',
+                  }}
+                  style={{width: size, height: size, tintColor: color}}
+                />
+              ),
+            }}
+          />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </View>
   );
-}
+};
+
+export default Task41;
+
+const styles = StyleSheet.create({});

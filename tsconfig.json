@@ -1,3 +1,4 @@
 {
-  "extends": "@react-native/typescript-config/tsconfig.json"
+  "extends": "@react-native/typescript-config/tsconfig.json",
+  "exclude": ["components/Task41/HomePage copy.js"]
 }
