@@ -14,31 +14,27 @@ const Task32 = () => {
 
   return (
     <View style={{...styles.container, width: width, height: height}}>
-      <TouchableOpacity
-        style={styles.touchable}
-        onPress={() => {
-          setIsPaused(!isPaused);
-        }}>
-        <Video
-          source={{uri: 'https://www.w3schools.com/html/mov_bbb.mp4'}}
-          style={styles.backgroundVideo}
-          paused={isPaused}
-          repeat={true}
-        />
-      </TouchableOpacity>
-      {isPaused && (
-        <View style={styles.overlay}>
-          <TouchableOpacity
-            onPress={() => {
-              setIsPaused(!isPaused);
-            }}>
-            <SvgUri
-              uri="https://placehold.co/400x215/orange/white?text=Play"
-              style={styles.playButton}
-            />
-          </TouchableOpacity>
-        </View>
-      )}
+      <Video
+        source={{uri: 'https://www.w3schools.com/html/mov_bbb.mp4'}}
+        style={styles.backgroundVideo}
+        paused={isPaused}
+        repeat={true}
+      />
+      <View style={styles.controls}>
+        <TouchableOpacity
+          onPress={() => {
+            setIsPaused(!isPaused);
+          }}>
+          <SvgUri
+            uri={
+              isPaused
+                ? 'https://placehold.co/50x50/00ff00/ffffff?text=Play'
+                : 'https://placehold.co/50x50/ff0000/ffffff?text=Pause'
+            }
+            style={styles.controlButton}
+          />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -46,23 +42,24 @@ const Task32 = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  touchable: {
-    flex: 1,
+    backgroundColor: 'black',
   },
   backgroundVideo: {
     ...StyleSheet.absoluteFillObject,
   },
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
+  controls: {
+    position: 'absolute',
+    bottom: 20,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
-  playButton: {
-    width: '30%',
-    height: '30%',
-    resizeMode: 'contain',
+  controlButton: {
+    width: 50,
+    height: 50,
+    marginHorizontal: 10,
   },
 });
 
