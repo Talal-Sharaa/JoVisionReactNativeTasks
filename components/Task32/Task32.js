@@ -7,11 +7,9 @@ import {
 } from 'react-native';
 import Video from 'react-native-video';
 import {SvgUri} from 'react-native-svg';
-
 const Task32 = () => {
   const {width, height} = useWindowDimensions();
   const [isPaused, setIsPaused] = React.useState(false);
-
   return (
     <View style={{...styles.container, width: width, height: height}}>
       <TouchableOpacity
@@ -42,7 +40,6 @@ const Task32 = () => {
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -62,8 +59,8 @@ const styles = StyleSheet.create({
   playButton: {
     width: '30%',
     height: '30%',
+    resizeMode: 'contain',
     resizeMode: 'cover',
   },
 });
-
 export default Task32;
